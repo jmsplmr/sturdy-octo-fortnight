@@ -5,7 +5,7 @@ const PORT = process.env.PORT;
 
 const BASE_URL = process.env.ENV_URL;
 
-app.set("PORT", 5000)
+app.set("PORT", PORT)
    .use(express.json())
    .use(express.urlencoded({extended:true}))
    .use(express.static(__dirname + "/public"))
