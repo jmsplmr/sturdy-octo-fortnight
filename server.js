@@ -29,14 +29,19 @@ app.set("PORT", PORT)
   });
 
 function postCourse(req, res) {
-  var name    = req.query.name;
-  var phone   = req.query.phone;
-  var contact = req.query.contact;
-  var address = req.query.address;
-  var city    = req.query.city;
-  var state   = req.query.state;
-  var zip     = req.query.zip;
+  console.log("Add a course to the database");
+  
+  var name    = req.body.name;
+  var phone   = req.body.phone;
+  var contact = req.body.contact;
+  var address = req.body.address;
+  var city    = req.body.city;
+  var state   = req.body.state;
+  var zip     = req.body.zip;
   var params = [name, address, city, state, zip, phone, contact];
+
+  console.log(params);
+  
 
   addCourseToDB(params, handleServerError(res));
 }
