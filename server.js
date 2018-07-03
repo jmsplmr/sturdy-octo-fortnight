@@ -44,7 +44,7 @@ function postCourse(req, res) {
 function addCourseToDB(params, callback) {
   console.log("Course:" + params);
   
-  var sql = "INSERT INTO courses (name, street_address, city, state, zip, phone, contact) VALUES ($1, $2, $3, $$, $5, $6, $7)";
+  var sql = "INSERT INTO courses (name, street_address, city, state, zip, phone, contact) VALUES ($1, $2, $3, $4, $5, $6, $7)";
 
   pool.query(sql, params, handleDBError(callback));
 }
