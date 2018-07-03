@@ -21,13 +21,37 @@ app.set("PORT", PORT)
   .get("/courses/", getCourses)
   .get("/course/:id", getCourse)
   .get("/rounds/:id", getUserRounds)
+  .post("/course", postCourse)
   .listen(app.get("PORT"), function () {
     console.log("Listening on port: " + app.get("PORT"));
     console.log(PORT);
     console.log(BASE_URL);
   });
 
+function postCourse(req, res) {
+  var name    = req.query.name;
+  var phone   = req.query.phone;
+  var contact = req.query.contact;
+  var address = req.query.address;
+  var city    = req.query.city;
+  var state   = req.query.state;
+  var zip     = req.query.zip;
+  var params = [name, address, city, state, zip, phone, contact];
+
+  addCourseToDB(params, handleServerError(res));
+}
+
+function addCourseToDB(params, callback) {
+  console.log("Course:" + params);
+  
+  var sql = "INSERT INTO courses (name, street_address, city, state, zip, phone, contact) VALUES ($1, $2, $3, $$, $5, $6, $7)";
+
+  pool.query(sql, params, handleDBError(callback));
+}
+
 function getUserRounds(req, res) {
+  console.log("Add a course to the database");
+  
   var id = req.params.id;
   console.log("Get course" + id);
 
