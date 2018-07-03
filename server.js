@@ -52,7 +52,7 @@ function getCourse(req, res) {
       console.log("Something is wrong");
       res.status(500).json({
         success: false,
-        data: error
+        data: err
       });
     }
     console.log("Back with result:" + result);
