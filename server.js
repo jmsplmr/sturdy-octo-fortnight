@@ -21,9 +21,6 @@ app.set("PORT", PORT)
   .use(express.static(__dirname + "/public"))
   .get("/courses/", getCourses)
   .get("/course/:id", getCourse)
-  .get()
-  .get()
-  .post("/authenticate")
   .listen(app.get("PORT"), function () {
     console.log("Listening on port: " + app.get("PORT"));
     console.log(PORT);
