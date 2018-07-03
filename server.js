@@ -38,11 +38,11 @@ function postCourse(req, res) {
   var city    = req.body.city;
   var state   = req.body.state;
   var zip     = req.body.zip;
+
   var params = [name, address, city, state, zip, phone, contact];
 
   console.log(params);
   
-
   addCourseToDB(params, handleServerError(res));
 }
 
@@ -74,7 +74,7 @@ function getRoundFromDBbyId(id, callback) {
 
 function handleServerError(res) {
   return function (err, result) {
-    if (err || result == null || result.length < 1) {
+    if (err || result == null) {
       console.log("Something is wrong");
       res.status(500).json({
         success: false,
