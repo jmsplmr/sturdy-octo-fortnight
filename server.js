@@ -36,6 +36,10 @@ function getUserRounds(req, res) {
   getCourseFromDBbyId(id, handleServerError(res));
 }
 
+function getCourseFromDBbyId(id, callback) {
+  
+}
+
 
 function handleServerError(res) {
   return function (err, result) {
@@ -55,15 +59,7 @@ function getCourseFromDBbyId(id, callback) {
   var sql = "SELECT name, street_address, city, state, zip, phone, contact FROM courses WHERE id = $1::int";
   var params = [id];
 
-  pool.query(sql, params, function (err, result) {
-    if (err) {
-      console.log("Server error");
-      console.error(err);
-      callback(err, null);
-    }
-    console.log("Got results: " + result);
-    callback(null, result.rows);
-  });
+  pool.query(sql, params, handleDBError(callback));
 }
 
 function getCourse(req, res) {
@@ -106,15 +102,5 @@ function getCoursesFromDB(callback) {
 
   var sql = "SELECT name, street_address, city, state, zip, phone, contact FROM courses";
 
-  pool.query(sql, function (err, result) {
-    if (err) {
-      console.log("Server error");
-      console.error(err);
-      callback(err, null);
-    }
-
-    console.log("Got results:" + result);
-
-    callback(null, result.rows);
-  });
+  pool.query(sql, handleDBError(callback));
 }
