@@ -9,8 +9,6 @@ const pool = new Pool({
   connectionString: connectionString
 });
 
-
-
 const PORT = process.env.PORT || 8000;
 const BASE_URL = process.env.ENV_URL || "localhost";
 
@@ -33,13 +31,17 @@ function getUserRounds(req, res) {
   var id = req.params.id;
   console.log("Get course" + id);
 
-  getCourseFromDBbyId(id, handleServerError(res));
+  getRoundFromDBbyId(id, handleServerError(res));
 }
 
-function getCourseFromDBbyId(id, callback) {
-  
-}
+function getRoundFromDBbyId(id, callback) {
+  console.log("getCourseFromDBbyId, course#" + id);
 
+  var params = [id];
+  var sql = "SELECT score, g.name  AS format, c2.name AS course, r.date FROM rounds r INNER JOIN courses c2 on r.course_id = c2.id INNER JOIN game_format g on r.format_id = g.id WHERE user_id = $1::int ORDER BY r.date";
+
+  pool.query(sql, params, handleDBError(callback));
+}
 
 function handleServerError(res) {
   return function (err, result) {
@@ -70,9 +72,9 @@ function getCourse(req, res) {
 }
 
 function getCourses(req, res) {
-
+  console.log("Get the courses list");
+  
   getCoursesFromDB(handleServerError(res));
-
 }
 
 function getUsersRatedCoursesFromDB(id, callback) {
