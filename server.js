@@ -19,7 +19,7 @@ app.set("PORT", PORT)
     extended: true
   }))
   .use(express.static(__dirname + "/public"))
-  .get("/courses/:id?", getCourses)
+  .get("/courses/", getCourses)
   .get("/course/:id", getCourse)
   .get()
   .get()
@@ -35,22 +35,22 @@ function getCourseFromDBbyId(id, callback) {
   var sql = "SELECT name, street_address, city, state, zip, phone, contact FROM courses WHERE id = $1::int";
   var params = [id];
 
-  pool.query(sql, params, function(err, result) {
-    if(err){
+  pool.query(sql, params, function (err, result) {
+    if (err) {
       console.log("Server error");
       console.error(err);
-      callback(err,null);
+      callback(err, null);
     }
-    console.log("Got results: "+ result);
+    console.log("Got results: " + result);
     callback(null, result.rows);
   });
 }
 
 function getCourse(req, res) {
-  var id = req.query.id;
+  var id = req.params.id;
   console.log("Get course" + id);
 
-  getCourseFromDBbyId(id, function(err, result) {
+  getCourseFromDBbyId(id, function (err, result) {
     if (err || result == null || result.length < 1) {
       console.log("Something is wrong");
       res.status(500).json({
@@ -65,48 +65,33 @@ function getCourse(req, res) {
 
 function getCourses(req, res) {
 
-  var id = req.params.id || null;
+  getCoursesFromDB(function (err, result) {
+    if (err || result == null || result.length < 1) {
+      console.log("Something is wrong");
+      res.status(500).json({
+        success: false,
+        data: err
+      });
+    }
+    console.log("Back with result:" + result);
+    res.json(result);
+  });
 
-  if (id) {
-    getUsersRatedCoursesFromDB(id, function(err, result) {
-      if (err || result == null || result.length < 1) {
-        console.log("Something is wrong");
-        res.status(500).json({
-          success: false,
-          data: err
-        });
-      }
-      console.log("Back with result:" + result);
-      res.json(result);
-    });
-  } else {
-    getCoursesFromDB(function (err, result) {
-      if (err || result == null || result.length < 1) {
-        console.log("Something is wrong");
-        res.status(500).json({
-          success: false,
-          data: err
-        });
-      }
-      console.log("Back with result:" + result);
-      res.json(result);
-    });
-  }
 }
 
 function getUsersRatedCoursesFromDB(id, callback) {
   console.log("GetUsersRatedCourseFromDB, User:" + id);
-  
+
   var params = [id];
   var sql = "SELECT courses.id, name, street_address AS address, city, state, rating FROM courses INNER JOIN course_rating rating2 on courses.id = rating2.course_id WHERE rating2.user_id = $1::int";
 
-  pool.query(sql, params, function(err, result) {
-    if(err){
+  pool.query(sql, params, function (err, result) {
+    if (err) {
       console.log("Server error");
       console.error(err);
-      callback(err,null);
+      callback(err, null);
     }
-    console.log("Got results: "+ result);
+    console.log("Got results: " + result);
     callback(null, result.rows);
   });
 }
@@ -114,7 +99,7 @@ function getUsersRatedCoursesFromDB(id, callback) {
 function getCoursesFromDB(callback) {
 
   console.log("Get courses from DB");
-  
+
   var sql = "SELECT name, street_address, city, state, zip, phone, contact FROM courses";
 
   pool.query(sql, function (err, result) {
