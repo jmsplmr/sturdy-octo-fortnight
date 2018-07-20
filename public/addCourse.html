@@ -1,31 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <title>Add course to DB</title>
+  <style>
+    .jumbotron {
+      background-color: #f4511e;
+      /* Orange */
+      color: #ffffff;
+    }
+  </style>
 </head>
+
 <body>
-  <div>
+  <div class="jumbotron text-center">
     <h2>Add a Course</h2>
-    <form method="post" action="course">
-      <label for="name">Name: </label>
-      <input type="text" name="name" id="name" placeholder="Disc Golf Course" required><br>
-      <label for="phone">Phone #: </label>
-      <input type="text" name="phone" id="phone" placeholder="555-444-3333"><br>
-      <label for="contact">Contact: </label>
-      <input type="text" name="contact" id="contact" placeholder="Responsible Party"><br>
-      <label for="address">Address: </label>
-      <input type="text" name="address" id="address" placeholder="# D Street Abr." required><br>
-      <label for="city">City: </label>
-      <input type="text" name="city" id="city" placeholder="Anywhere" required><br>
-      <label for="state">State: </label>
-      <input type="text" name="state" id="state" placeholder="ST" required><br>
-      <label for="zip">Zip: </label>
-      <input type="text" name="zip" id="zip" placeholder="55555" required><br>
-      <input type="submit">
+    </div>
+    <div class="col-sm-12">
+    <form class="form-horizontal col-sm-4" method="post" action="course">
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="name">Name: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="name" id="name" placeholder="Disc Golf Course" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="phone">Phone #: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="phone" id="phone" placeholder="555-444-3333">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="contact">Contact: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="contact" id="contact" placeholder="Responsible Party">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="address">Address: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="address" id="address" placeholder="# D Street Abr." required>
+        </div>
+      </div>
+      <div class="form-group-sm">
+        <label class="control-label col-sm-2" for="city">City: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="city" id="city" placeholder="Anywhere" required>
+        </div>
+        <label class="control-label col-sm-2" for="state">State: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="state" id="state" placeholder="ST" required>
+        </div>
+        <label class="control-label col-sm-2" for="zip">Zip: </label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="zip" id="zip" placeholder="55555" required>
+        </div>
+      </div>
+      <div class="form-group-lg">
+        <div class="col-sm-10">
+          <button type="submit" class="btn btn-success form-group-btn">Submit </button>
+        </div>
+      </div>
     </form>
-  </div>
+    </div>
 </body>
+
 </html>

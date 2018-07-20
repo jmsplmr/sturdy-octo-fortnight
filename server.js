@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var error = require('/src/web_endpoints/db/error.js');
 
 const { Pool } = require('pg');
 
@@ -121,4 +120,25 @@ function getUsersRatedCoursesFromDB(id, callback) {
     'SELECT courses.id, name, street_address AS address, city, state, rating FROM courses INNER JOIN course_rating rating2 on courses.id = rating2.course_id WHERE rating2.user_id = $1::int';
 
   pool.query(sql, params, handleDBError(callback));
+}
+
+function handleDBError(callback) {
+  return function(err, result) {
+    if (err) {
+      console.log('Server error');
+      console.error(err);
+      callback(err, null);
+    }
+    console.log('Got results: ' + result);
+    callback(null, result.rows);
+  };
+}
+
+function getCoursesFromDB(callback) {
+
+  console.log('Get courses from DB');
+
+  let sql = 'SELECT name, street_address, city, state, zip, phone, contact FROM courses';
+
+  pool.query(sql, error.handleDBError(callback));
 }
