@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Course Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let id = $('#id_val').val();
+            let url = '/course/' + id;
+            console.log('ID', id);
+
+            $.get(url, function (data, status) {
+                drawTable(data);
+            });
+        });
+
+        function drawTable(data) {
+            for (var i = 0; i < data.length; i++) {
+                console.log('Name', data[i].name);
+                
+                $('#title').text(data[i].name);
+                drawRow(data[i]);
+            }
+        }
+
+        function drawRow(rowData) {
+            var row = $('<tr/>');
+            $('#courseDataTable').append(row); //this will append tr element to table... keep its reference for a while since we will add cells into it
+            row.append($('<td>' + rowData.contact + '</td>'));
+            row.append($('<td>' + rowData.phone + '</td>'));
+            row.append($('<td>' + rowData.street_address + '</td>'));
+            row.append($('<td>' + rowData.city + '</td>'));
+            row.append($('<td>' + rowData.state + '</td>'));
+            row.append($('<td>' + rowData.zip + '</td>'));
+            row.append($('</tr>'));
+        }
+    </script>
+    <style>
+        .jumbotron {
+            background-color: #f4511e;
+            /* Orange */
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="number" id="id_val" value="<%- id %>" hidden>
+    <div class="jumbotron text-center">
+        <h1 id="title">Disc Golf Courses</h1>
+    </div>
+    <div>
+        <table class="table" id="courseDataTable">
+            <tr>
+                <th>Contact</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

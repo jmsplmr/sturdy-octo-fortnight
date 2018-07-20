@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="home.js"></script>
+  <title>East Idaho Disc Golf Courses</title>
+  <style>
+      .jumbotron {
+        background-color: #f4511e;
+        /* Orange */
+        color: #ffffff;
+      }
+    </style>
+</head>
+
+<body>
+  <div class="jumbotron text-center">
+      <h1>Disc Golf Courses</h1>
+      <p>Disc Golf courses in the East Idaho Area</p>
+  </div>
+  <div>
+      <table class="table" id="courseDataTable">
+          <tr>
+              <th>Name</th>
+              <th>Contact</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Zip</th>
+              <th>
+              </th>
+          </tr>
+      </table>
+  </div>
+  <div>
+    <input type="button" class="btn btn-success" value="Add" onclick="addCourse()">
+  </div>
+
+
+</body>
+
+</html>
