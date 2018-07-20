@@ -140,5 +140,5 @@ function getCoursesFromDB(callback) {
 
   let sql = 'SELECT name, street_address, city, state, zip, phone, contact FROM courses';
 
-  pool.query(sql, error.handleDBError(callback));
+  pool.query(sql, handleDBError(callback));
 }
