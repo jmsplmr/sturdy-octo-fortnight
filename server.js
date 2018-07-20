@@ -14,6 +14,7 @@ const BASE_URL = process.env.ENV_URL || 'localhost';
 
 app
   .set('PORT', PORT)
+  .set('view engine', 'ejs')
   .use(express.json())
   .use(
     express.urlencoded({
@@ -21,15 +22,30 @@ app
     })
   )
   .use(express.static(__dirname + '/public'))
+  .get('/', function(req, res){
+    res.redirect('/home.html');
+  })
+  .get('/courseDetail/:id', function (req, res) {
+    var id = req.params.id;
+    
+    res.render('courseDetails', {id: id});
+  })
   .get('/courses/', getCourses)
   .get('/course/:id', getCourse)
   .get('/rounds/:id', getUserRounds)
-  .post('/course', postCourse)
+  .post('/course', postCourse, function (req, res) { res.redirect('/'); })
+  .get('*', function (req, res) {
+    res.redirect('/');
+  })
   .listen(app.get('PORT'), function() {
     console.log('Listening on port ', app.get('PORT'));
     console.log('PORT', PORT);
     console.log('BASE_URL', BASE_URL);
+    console.log('DATABASE_URL', connectionString);
+    
   });
+
+
 
 function postCourse(req, res) {
   console.log('Add a course to the database');
@@ -46,16 +62,32 @@ function postCourse(req, res) {
 
   console.log(params);
 
-  addCourseToDB(params, handleServerError(res));
+  addCourseToDB(res, params, handleServerError(res));
+  res.redirect('/');
 }
 
-function addCourseToDB(params, callback) {
+function addCourseToDB(res, params, callback) {
   console.log('Course:' + params);
 
   var sql =
     'INSERT INTO courses (name, street_address, city, state, zip, phone, contact) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
-  pool.query(sql, params, handleDBError(callback));
+  pool.query(sql, params, handlePostDBError(res, callback));
+}
+
+
+function handlePostDBError(res, callback) {
+  return function(err, result) {
+    if (err) {
+      console.log('Server error');
+      console.error(err);
+      callback(err, null);
+    }
+    console.log('Got results: ' + result);
+    callback(null, function(res) {
+      res.redirect('/');
+    });
+  };
 }
 
 function getUserRounds(req, res) {
@@ -138,7 +170,7 @@ function getCoursesFromDB(callback) {
 
   console.log('Get courses from DB');
 
-  let sql = 'SELECT name, street_address, city, state, zip, phone, contact FROM courses';
+  let sql = 'SELECT id, name, street_address, city, state, zip, phone, contact FROM courses';
 
   pool.query(sql, handleDBError(callback));
 }

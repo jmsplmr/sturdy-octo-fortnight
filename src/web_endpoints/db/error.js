@@ -9,3 +9,5 @@ function handleDBError(callback) {
     callback(null, result.rows);
   };
 }
+
+export handleDBError;
