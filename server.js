@@ -2,9 +2,7 @@ var express = require('express');
 var app = express();
 var error = require('/src/web_endpoints/db/error.js');
 
-const {
-  Pool
-} = require('pg');
+const { Pool } = require('pg');
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -15,17 +13,20 @@ const pool = new Pool({
 const PORT = process.env.PORT || 8000;
 const BASE_URL = process.env.ENV_URL || 'localhost';
 
-app.set('PORT', PORT)
+app
+  .set('PORT', PORT)
   .use(express.json())
-  .use(express.urlencoded({
-    extended: true
-  }))
+  .use(
+    express.urlencoded({
+      extended: true
+    })
+  )
   .use(express.static(__dirname + '/public'))
   .get('/courses/', getCourses)
   .get('/course/:id', getCourse)
   .get('/rounds/:id', getUserRounds)
   .post('/course', postCourse)
-  .listen(app.get('PORT'), function () {
+  .listen(app.get('PORT'), function() {
     console.log('Listening on port ', app.get('PORT'));
     console.log('PORT', PORT);
     console.log('BASE_URL', BASE_URL);
@@ -52,7 +53,8 @@ function postCourse(req, res) {
 function addCourseToDB(params, callback) {
   console.log('Course:' + params);
 
-  var sql = 'INSERT INTO courses (name, street_address, city, state, zip, phone, contact) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+  var sql =
+    'INSERT INTO courses (name, street_address, city, state, zip, phone, contact) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
   pool.query(sql, params, handleDBError(callback));
 }
@@ -70,13 +72,14 @@ function getRoundFromDBbyId(id, callback) {
   console.log('getCourseFromDBbyId, course#' + id);
 
   var params = [id];
-  var sql = 'SELECT score, g.name  AS format, c2.name AS course, r.date FROM rounds r INNER JOIN courses c2 on r.course_id = c2.id INNER JOIN game_format g on r.format_id = g.id WHERE user_id = $1::int ORDER BY r.date';
+  var sql =
+    'SELECT score, g.name  AS format, c2.name AS course, r.date FROM rounds r INNER JOIN courses c2 on r.course_id = c2.id INNER JOIN game_format g on r.format_id = g.id WHERE user_id = $1::int ORDER BY r.date';
 
   pool.query(sql, params, handleDBError(callback));
 }
 
 function handleServerError(res) {
-  return function (err, result) {
+  return function(err, result) {
     if (err || result == null) {
       console.log('Something is wrong');
       res.status(500).json({
@@ -90,7 +93,8 @@ function handleServerError(res) {
 }
 
 function getCourseFromDBbyId(id, callback) {
-  var sql = 'SELECT name, street_address, city, state, zip, phone, contact FROM courses WHERE id = $1::int';
+  var sql =
+    'SELECT name, street_address, city, state, zip, phone, contact FROM courses WHERE id = $1::int';
   var params = [id];
 
   pool.query(sql, params, handleDBError(callback));
@@ -113,7 +117,8 @@ function getUsersRatedCoursesFromDB(id, callback) {
   console.log('GetUsersRatedCourseFromDB, User:' + id);
 
   var params = [id];
-  var sql = 'SELECT courses.id, name, street_address AS address, city, state, rating FROM courses INNER JOIN course_rating rating2 on courses.id = rating2.course_id WHERE rating2.user_id = $1::int';
+  var sql =
+    'SELECT courses.id, name, street_address AS address, city, state, rating FROM courses INNER JOIN course_rating rating2 on courses.id = rating2.course_id WHERE rating2.user_id = $1::int';
 
   pool.query(sql, params, handleDBError(callback));
 }
